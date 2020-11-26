@@ -55,11 +55,10 @@ public class Player {
 
 
 
-    public  void dfs(State node)
-    {
+   /* public  void dfs(State node) {
         node.printState();
-        if(player.checkWin(node)){
-
+        if(player.win){
+            System.out.println("lalalala");
             return;
 
         }
@@ -70,7 +69,7 @@ public class Player {
          //   System.out.println("i =" + i);
             State n=neighbours.get(i);
             n.printState();
-            if(n!= null &&!player.containState(visited,n)&&! player.checkWin(n) )
+            if(!player.containState(visited,n)&&!player.win )
             {
                // System.out.println("lklklk");
                 dfs(n);
@@ -78,6 +77,24 @@ public class Player {
             }
         }
 
+    }*/
+
+    public void dfsWithoutRecursion(State start) {
+        Stack<State> stack = new Stack<>();
+       // boolean[] isVisited = new boolean[adjVertices.size()];
+        stack.push(start);
+        while (!stack.isEmpty()) {
+            if(player.win)
+                return;
+            State current = stack.pop();
+            visited.add(current);
+            ArrayList<State> s=player.everyPossibleMove(current);
+            for (int i = 0; i <s.size() ; i++) {
+                State n=s.get(i);
+                if (!player.containState(visited,n)&& !player.win)
+                    stack.push(n);
+            }
+        }
     }
 
     void BFS(State node)

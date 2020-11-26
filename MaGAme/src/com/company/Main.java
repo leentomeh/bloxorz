@@ -6,7 +6,7 @@ public class Main {
         // write your code here
         Player player = new Player();
       //   player.input();
-     player.dfs(player.initialState);
+     player.dfsWithoutRecursion(player.initialState);
        // player.BFS(player.initialState);
     }
 }
