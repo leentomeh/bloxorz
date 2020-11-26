@@ -1,13 +1,12 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Player {
     GameManager player = new GameManager();
     State initialState = new State();
     ArrayList<State> visited=new ArrayList<>();
+    ArrayList<String> path=new ArrayList<>();
 
     public  Player(){
         System.out.println("iniState");
@@ -59,18 +58,59 @@ public class Player {
     public  void dfs(State node)
     {
         node.printState();
+        if(player.checkWin(node)){
+
+            return;
+
+        }
         ArrayList<State> neighbours=player.everyPossibleMove(node);
-        System.out.println(neighbours.size() + " size ");
+    //    System.out.println(neighbours.size() + " size ");
         visited.add(node);
         for (int i = 0; i < neighbours.size(); i++) {
-            System.out.println("i =" + i);
+         //   System.out.println("i =" + i);
             State n=neighbours.get(i);
             n.printState();
-            if(!player.containState(visited,n))
+            if(n!= null &&!player.containState(visited,n)&&! player.checkWin(n) )
             {
-                System.out.println("lklklk");
+               // System.out.println("lklklk");
                 dfs(n);
+
             }
         }
+
+    }
+
+    void BFS(State node)
+    {
+
+
+        LinkedList<State> queue = new LinkedList();
+
+        visited.add(node);
+        queue.add(node);
+
+        while (queue.size() != 0) {
+            node = queue.poll();
+            node.printState();
+         //   System.out.print(s + " ");
+
+          //  Iterator<Integer> i = adj[s].listIterator();
+            ArrayList<State> neighbours=player.everyPossibleMove(node);
+            for (int i = 0; i <neighbours.size() ; i++) {
+
+                State n = neighbours.get(i);
+                if (!player.containState(visited,n) && !player.checkWin(n)) {
+                    visited.add(n);
+                    queue.add(n);
+                }
+
+            }
+    }}
+
+    public void UCS(State state){
+
+
+
+
     }
 }

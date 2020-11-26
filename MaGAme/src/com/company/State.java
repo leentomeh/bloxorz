@@ -7,10 +7,21 @@ public class State {
 
     Floor floor;
     Mass myMass;
+    int cost;
     public State(){
         floor=new Floor(4,3);
         myMass=new Mass(3,2);
         floor.setTemp();
+    }
+    //Tiles winGap=this.floor.floor[0][1];
+
+    public void setCost(){
+        if(myMass.isV)
+        this.cost=1;
+        if(!myMass.isV)
+            this.cost=2;
+
+
     }
 
     public State(State state){
@@ -58,7 +69,20 @@ public class State {
     }
 
 
+    public  State copyState(State state){
+        State temp=new State();
+      //  temp.floor=state.getFloor();
+        temp.setMyMass(state.myMass.isV,state.myMass.x1,state.myMass.y1,state.myMass.x2,state.myMass.y2);
 
+
+        // copy the same tiles to a new tiles array with different location
+        for (int i = 0; i < state.getFloor().width; i++) {
+            for (int j = 0; j < state.getFloor().height; j++) {
+               temp.floor.floor [i][j] = new Tiles(state.getFloor().floor[i][j]);
+            }
+        }
+
+    return temp;
 
     
 }
@@ -233,7 +257,7 @@ class Floor {
     public Tiles[][] getFloor() {
         return floor;
     }
-}
+}}
 
 
 

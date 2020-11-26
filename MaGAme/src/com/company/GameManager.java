@@ -8,6 +8,9 @@ public class GameManager extends State{
     boolean win = false;
 //    State state = new State();
     ArrayList<State> history = new ArrayList<>();
+    ArrayList<String> path=new ArrayList<>();
+
+
     Tiles tile =new Tiles();
 
 
@@ -36,7 +39,7 @@ public class GameManager extends State{
                     return true;
                 }
             }
-        } catch (Exception e) {
+        } catch ( ArrayIndexOutOfBoundsException e) {
             return false;
         }
         return false;
@@ -67,7 +70,7 @@ public class GameManager extends State{
                     return true;
                 }
             }
-        } catch (Exception e) {
+        } catch ( ArrayIndexOutOfBoundsException e) {
             return false;
         }
         return false;
@@ -87,7 +90,7 @@ public class GameManager extends State{
 
                 }
             } else if (y1 == y2) {
-                if ((!state.getFloor().floor[x1 - 1][y1].isEmpty) || state.getFloor().floor[x1 - 2][y1].isWinGap) {
+                if ((!state.getFloor().floor[x1 - 2][y1].isEmpty) || state.getFloor().floor[x1 - 2][y1].isWinGap) {
                     return true;
                 }
 
@@ -98,7 +101,7 @@ public class GameManager extends State{
                     return true;
                 }
             }
-        } catch (Exception e) {
+        } catch ( ArrayIndexOutOfBoundsException e) {
             return false;
         }
         return false;
@@ -129,15 +132,15 @@ public class GameManager extends State{
                     return true;
                 }
             }
-        } catch (Exception e) {
+        } catch ( ArrayIndexOutOfBoundsException e) {
             return false;
         }
         return false;
     }
 
-    public String moveLeft(State bitch) {
-        State state= new State(bitch);
-        String x;
+    public void moveLeft(State state) {
+      //  State state= bitch.copyState(bitch);
+
         if (canMoveLeft(state)) {
             int x1 = state.getMyMass().x1,
                     x2 = state.getMyMass().x2,
@@ -179,13 +182,12 @@ public class GameManager extends State{
 
         } else
             lose();
-        return "left";
 
 
     }
 
-    public void moveRight(State bitch) {
-        State state= new State(bitch);
+    public void moveRight(State state) {
+     //   State state= bitch.copyState(bitch);
 
         if (canMoveRight(state)) {
 
@@ -230,8 +232,8 @@ public class GameManager extends State{
             lose();
     }
 
-    public void moveUp(State bitch) {
-        State state= new State(bitch);
+    public void moveUp(State state) {
+     //   State state= bitch.copyState(bitch);
 
         if (canMoveUp(state)) {
             int x1 = state.getMyMass().x1,
@@ -275,8 +277,8 @@ public class GameManager extends State{
             lose();
     }
 
-    public void moveDown(State bitch) {
-        State state= new State(bitch);
+    public void moveDown(State state) {
+      //  State state= bitch.copyState(bitch);
 
         if (canMoveDown(state)) {
             int x1 = state.getMyMass().x1,
@@ -409,107 +411,70 @@ public class GameManager extends State{
     }*/
 
 
-//    public void setTemp() {
-//        tile = new Tiles(0, 0, true, false, false);
-//        state.floor.floor[0][0] = tile;
-//        tile = new Tiles(0, 1, false, true, false);
-//        state.floor.floor[0][1] = tile;
-//        tile = new Tiles(0, 2, true, false, false);
-//        state.floor.floor[0][2] = tile;
-//
-//
-//        tile = new Tiles(1, 0, false, false, false);
-//        state.floor.floor[1][0] = tile;
-//        tile = new Tiles(1, 1, false, false, false);
-//        state.floor.floor[1][1] = tile;
-//        tile = new Tiles(1, 2, false, false, false);
-//        state.floor.floor[1][2] = tile;
-//
-//
-//        tile = new Tiles(2, 0, false, false, false);
-//        state.floor.floor[2][0] = tile;
-//        tile = new Tiles(2, 1, false, false, false);
-//        state.floor.floor[2][1] = tile;
-//        tile = new Tiles(2, 2, false, false, false);
-//        state.floor.floor[2][2] = tile;
-//
-//
-//        tile = new Tiles(3, 0, false, false, false);
-//        state.floor.floor[3][0] = tile;
-//        tile = new Tiles(3, 1, false, false, false);
-//        state.floor.floor[3][1] = tile;
-//        tile = new Tiles(3, 2, false, false, true);
-//        state.floor.floor[3][2] = tile;
-//
-//
-//    }
-
 
     public boolean checkIfEnd(State state) {
 
         return checkWin(state) || lose;
     }
 
-    public boolean ifEqual(Floor x, Floor y) {
-        int count1 = 0, count2 = 0;
-        for (int i = 0; i < x.width; i++) {
-            for (int j = 0; j < x.height; j++) {
-                if (x.floor[i][j].hasMass && y.floor[i][j].hasMass) {
-                    count1++;
-                    count2++;
-                }
-            }
-            if (count1 == count2)
-                return true;
-        }
-        return false;
-    }
 
-    public ArrayList<State> everyPossibleMove(State state) {
 
-        State temp = new State(state);
+    public ArrayList<State> everyPossibleMove(State bitch) {
+
+        State temp= bitch.copyState(bitch);
         ArrayList<State> possibility = new ArrayList<>();
 
-        State sLeft = new State(temp);
-        State sRight = new State(temp);
-        State sUp = new State(temp);
-        State sDown = new State(temp);
+
 
         if (canMoveLeft(temp)) {
-            boolean left=canMoveLeft(temp);
+
+            State sLeft=temp.copyState(temp);
+           // System.out.println("my temp before move");
+           // temp.printState();
+           // System.out.println("my sLeft before move");
+            //sLeft.printState();
             moveLeft(sLeft);
+            //System.out.println("my temp after move");
+            //temp.printState();
+            //System.out.println("my sLeft after move");
+           // sLeft.printState();
+            path.add("left");
             possibility.add(sLeft);
-            sLeft.printState();
-            System.out.println(left);
+
+
 
         }
         if (canMoveRight(temp)) {
-            boolean left=canMoveLeft(temp);
-            System.out.println(left+"1");
+            State sRight=temp.copyState(temp);
+          //  boolean left=canMoveLeft(temp);
+            //System.out.println(left+"1");
             moveRight(sRight);
+            path.add("right");
             possibility.add(sRight);
-            sRight.printState();
-            System.out.println(left);
+           // sRight.printState();
+            //System.out.println(left);
 
         }
         if (canMoveUp(temp)) {
-            boolean left=canMoveLeft(temp);
+            State sUp=temp.copyState(temp);
+            //boolean left=canMoveLeft(temp);
             moveUp(sUp);
+            //path.add("Up");
             possibility.add(sUp);
-            sUp.printState();
-            System.out.println(left);
+           // sUp.printState();
+            //System.out.println(left);
         }
         if (canMoveDown(temp)) {
-            boolean left=canMoveLeft(temp);
+            State sDown=temp.copyState(temp);
+            //boolean left=canMoveLeft(temp);
             moveDown(sDown);
+            path.add("down");
             possibility.add(sDown);
-            sDown.printState();
-            System.out.println(left);
+          //  sDown.printState();
+            //System.out.println(left);
 
         }
-        System.out.println("inistatw");
-        temp.printState();
-        System.out.println("done");
+
         return possibility;
 
     }
